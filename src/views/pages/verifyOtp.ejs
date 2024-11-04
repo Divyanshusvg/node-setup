@@ -1,0 +1,168 @@
+<!doctype html>
+
+<html
+  lang="en"
+  class="light-style layout-wide customizer-hide"
+  dir="ltr"
+  data-theme="theme-default"
+  data-assets-path="../assets/"
+  data-template="vertical-menu-template-free"
+  data-style="light"
+>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+
+    <title>Verify OTP</title>
+
+    <meta name="description" content="" />
+
+    <!-- Favicon -->
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="<%= siteUrl %>/assets/img/favicon/favi2.png"
+    />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="../assets/vendor/fonts/boxicons.css" />
+
+    <!-- Core CSS -->
+    <link
+      rel="stylesheet"
+      href="../assets/vendor/css/core.css"
+      class="template-customizer-core-css"
+    />
+    <link
+      rel="stylesheet"
+      href="../assets/vendor/css/theme-default.css"
+      class="template-customizer-theme-css"
+    />
+    <link rel="stylesheet" href="../assets/css/demo.css" />
+
+    <!-- Vendors CSS -->
+    <link
+      rel="stylesheet"
+      href="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css"
+    />
+
+    <!-- Page CSS -->
+    <!-- Page -->
+    <link rel="stylesheet" href="../assets/vendor/css/pages/page-auth.css" />
+
+    <!-- Helpers -->
+    <script src="../assets/vendor/js/helpers.js"></script>
+    <script src="../assets/js/config.js"></script>
+  </head>
+
+  <body>
+    <!-- Content -->
+
+    <div class="container-xxl">
+      <div class="authentication-wrapper authentication-basic container-p-y">
+        <div class="authentication-inner">
+          <!-- Register -->
+          <div class="card px-sm-6 px-0">
+            <div class="card-body">
+              <!-- Logo -->
+              <div class="app-brand justify-content-center">
+                <a href="index.html" class="app-brand-link gap-2">
+                  <span class="app-brand-logo demo">
+                    <div
+                      style="
+                        background-color: rgb(0, 0, 0);
+                        display: inline-block;
+                        padding: 10px;
+                      "
+                    >
+                      <img
+                        src="data:image/png;base64,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"
+                        alt="Logo"
+                      />
+                    </div>
+                  </span>
+                </a>
+              </div>
+              <!-- /Logo -->
+              <h4 class="mb-1">Verify Your Phone Number 👋</h4>
+              <p class="mb-6">Please enter the OTP sent to your phone number</p>
+
+              <form
+                id="formAuthentication"
+                class="mb-6"
+                method="POST"
+                action="/verifyOtpAdmin"
+              >
+                <div class="mb-6">
+                  <div class="mb-4">Your OTP is: <strong><%= otp %></strong></div>
+                  <label for="otp" class="form-label">Enter OTP</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="otp"
+                    name="otp"
+                    placeholder="Enter OTP"
+                    autofocus
+                  />
+                  <input
+                    type="hidden"
+                    id="phone_no"
+                    name="phone_no"
+                    value="<%= phone_no %>"
+                  />
+                </div>
+                <% if (error) { %>
+                <div class="alert alert-danger" role="alert"><%= error %></div>
+                <% } %>
+                <div class="mb-6">
+                  <button
+                    id="getOtpBtn"
+                    class="btn d-grid w-100"
+                    type="submit"
+                    style="
+                      background-color: #014751;
+                      border-color: #014751;
+                      color: white;
+                      cursor: pointer;
+                      outline: none;
+                    "
+                    onmouseover="this.style.backgroundColor='#AFF9C8'; this.style.color='black'; this.style.borderColor='#014751';"
+                    onmouseout="this.style.backgroundColor='#014751'; this.style.color='white'; this.style.borderColor='#014751';"
+                  >
+                    Verify OTP
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <!-- /Register -->
+        </div>
+      </div>
+    </div>
+
+    <script src="../assets/vendor/libs/jquery/jquery.js"></script>
+    <script src="../assets/vendor/libs/popper/popper.js"></script>
+    <script src="../assets/vendor/js/bootstrap.js"></script>
+    <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+    <script src="../assets/vendor/js/menu.js"></script>
+    <script src="../assets/js/main.js"></script>
+
+    <!-- Page JS -->
+
+    <!-- Place this tag before closing body tag for github widget button. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+  </body>
+  <script></script>
+</html>
+
+<!-- // -->

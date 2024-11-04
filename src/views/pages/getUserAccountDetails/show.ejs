@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en" class="light-style layout-menu-fixed layout-compact" dir="ltr" data-theme="theme-default">
+<head>
+  <!-- Add your head elements here -->
+</head>
+<body>
+  <!-- Layout wrapper -->
+  <div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+      <!-- Menu -->
+      <%- include('../../partials/sideBar') %>
+      <!-- / Menu -->
+
+      <!-- Layout container -->
+      <div class="layout-page">
+        <!-- Navbar -->
+        <%- include('../../partials/header') %>
+        <!-- / Navbar -->
+
+        <!-- Content wrapper -->
+        <div class="content-wrapper">
+          <div class="content mt-10">
+            <div class="container-fluid">
+              <!-- Personal Information Section -->
+              <div class="row">
+                <div class="col-lg-12">
+                  <div style="background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-bottom: 20px;">
+                    <h5 class="heading">Personal Information</h5>
+                    <div style="margin-bottom: 10px;">
+                      <strong style="display: inline-block; min-width: 150px; color: #555;">User Name:</strong> <%= user.userName %>
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                      <strong style="display: inline-block; min-width: 150px; color: #555;">User Business Name:</strong> <%= user.businessName %>
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                      <strong style="display: inline-block; min-width: 150px; color: #555;">Email:</strong> <%= user.email %>
+                    </div>
+                    <div style="margin-bottom: 10px;">
+                      <strong style="display: inline-block; min-width: 150px; color: #555;">Created At:</strong> <%= new Date(user.createdAt).toDateString() %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Checking Account Details Section -->
+              <% if (user.checkingAccount && user.checkingAccount.data && user.checkingAccount.data.accounts.length > 0) { %>
+                <div class="row">
+                  <div class="col-lg-6">
+                    <div style="background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-bottom: 20px;">
+                      <h5 class="heading">Checking Account Details</h5>
+                      <div style="margin-bottom: 10px;">
+                        <strong style="color: #555;">Account Id :</strong> <%= user.checkingAccount.data.accounts[0].account_id %>
+                      </div>
+                      <div style="margin-bottom: 10px;">
+                        <strong style="color: #555;">Account Name:</strong> <%= user.checkingAccount.data.accounts[0].name %>
+                      </div>
+                      <div class="balance-info">
+                        <strong class="balance-label">Available Balance:</strong> 
+                        <span class="balance-amount"><%="$"%><%= user.checkingAccount.data.accounts[0].balances.available %></span>
+                      </div>
+                      <div class="balance-info">
+                        <strong class="balance-label">Current Balance:</strong> 
+                        <span class="balance-amount"><%="$"%><%= user.checkingAccount.data.accounts[0].balances.current %></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div style="background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-bottom: 20px;">
+                      <h5 class="heading">Checking Account Numbers</h5>
+                      <div style="margin-bottom: 10px;">
+                        <strong style="color: #555;">Routing:</strong> <%= user.checkingAccount.data.numbers.ach[0].routing %>
+                      </div>
+                      <div style="margin-bottom: 10px;">
+                        <strong style="color: #555;">Wire Routing:</strong> <%= user.checkingAccount.data.numbers.ach[0].wire_routing %>
+                      </div>
+                      <div style="margin-bottom: 10px;">
+                        <strong style="color: #555;">Account Number:</strong> <%= user.checkingAccount.data.numbers.ach[0].account %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <% } else { %>
+                <div style="margin-bottom: 10px;">No Checking Account details available</div>
+              <% } %>
+
+              <!-- Saving Account Details Section -->
+              <% if (user.SavingAccount && user.SavingAccount.data && user.SavingAccount.data.accounts.length > 0) { %>
+                <div class="row">
+                  <div class="col-lg-6">
+                    <div style="background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-bottom: 20px;">
+                      <h5 class="heading">Saving Account Details</h5>
+                      <div style="margin-bottom: 10px;">
+                        <strong style="color: #555;">Account Id :</strong> <%= user.SavingAccount.data.accounts[0].account_id %>
+                      </div>
+                      <div style="margin-bottom: 10px;">
+                        <strong style="color: #555;">Account Name:</strong> <%= user.SavingAccount.data.accounts[0].name %>
+                      </div>
+                      <div class="balance-info">
+                        <strong class="balance-label">Available Balance:</strong> 
+                        <span class="balance-amount"><%="$"%><%= user.SavingAccount.data.accounts[0].balances.available %></span>
+                      </div>
+                      <div class="balance-info">
+                        <strong class="balance-label">Current Balance:</strong> 
+                        <span class="balance-amount"><%="$"%><%= user.SavingAccount.data.accounts[0].balances.current %></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div style="background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-bottom: 20px;">
+                      <h5 class="heading">Saving Account Numbers</h5>
+                      <div style="margin-bottom: 10px;">
+                        <strong style="color: #555;">Routing:</strong> <%= user.SavingAccount.data.numbers.ach[0].routing %>
+                      </div>
+                      <div style="margin-bottom: 10px;">
+                        <strong style="color: #555;">Wire Routing:</strong> <%= user.SavingAccount.data.numbers.ach[0].wire_routing %>
+                      </div>
+                      <div style="margin-bottom: 10px;">
+                        <strong style="color: #555;">Account Number:</strong> <%= user.SavingAccount.data.numbers.ach[0].account %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <% } else { %>
+                <div style="margin-bottom: 10px;">No Saving Account details available</div>
+              <% } %>
+
+            </div>
+          </div>
+
+          <%- include('../../partials/footer') %>
+          <div class="content-backdrop fade"></div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Core JS -->
+    <script src="../assets/vendor/libs/jquery/jquery.js"></script>
+    <script src="../assets/vendor/libs/popper/popper.js"></script>
+    <script src="../assets/vendor/js/bootstrap.js"></script>
+    <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+    <script src="../assets/vendor/js/menu.js"></script>
+    
+    <!-- Main JS -->
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/dashboards-analytics.js"></script>
+
+    <script>
+      $(document).ready(function () {
+        // Log users to console
+      });
+    </script>
+  </body>
+</html>

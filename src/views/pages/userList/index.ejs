@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en" class="light-style layout-menu-fixed layout-compact" dir="ltr" data-theme="theme-default">
+<head>
+  <!-- Add your head elements here -->
+</head>
+<body>
+  <!-- Layout wrapper -->
+  <div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+      <!-- Menu -->
+      <%- include('../../partials/sideBar') %>
+      <!-- / Menu -->
+
+      <!-- Layout container -->
+      <div class="layout-page">
+        <!-- Navbar -->
+        <%- include('../../partials/header') %>
+        <!-- / Navbar -->
+
+        <!-- Search Input -->
+        <input
+          type="text"
+          id="searchInput"
+          class="form-control"
+          placeholder="Search Users"
+          style="width: 300px"
+          aria-label="Search Users"
+        />
+
+        <!-- Limit Dropdown -->
+        <select id="limitSelect" class="form-control" style="width: 150px" aria-label="Results per page">
+          <option value="10" <%= limit == 10 ? 'selected' : '' %>>10 per page</option>
+          <option value="25" <%= limit == 25 ? 'selected' : '' %>>25 per page</option>
+          <option value="50" <%= limit == 50 ? 'selected' : '' %>>50 per page</option>
+          <option value="100" <%= limit == 100 ? 'selected' : '' %>>100 per page</option>
+        </select>
+
+        <!-- Content wrapper -->
+        <div class="content-wrapper">
+          <!-- Content -->
+          <div class="content mt-10">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-lg-12">
+                  <!-- User Table -->
+                  <div style="background-color: white; padding: 20px; border-radius: 8px;">
+                    <h5 style="margin-bottom: 20px; text-align: center;">User Table</h5>
+                    <table class="table table-striped" style="background-color: white;">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Name</th>
+                          <th>Email</th>
+                          <th>Created At</th>
+                          <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <% users.forEach((user, index) => { %>
+                          <tr>
+                            <td><%= index + 1 %></td>
+                            <td><%= user.userName %></td>
+                            <td><%= user.email %></td>
+                            <td><%= new Date(user.createdAt).toDateString() %></td>
+                            <td>
+                              <a href="/editUser/<%= user._id %>" class="btn btn-primary btn-sm">Edit</a>
+                              <a href="/deleteUser/<%= user._id %>" class="btn btn-danger btn-sm">Delete</a>
+                            </td>
+                          </tr>
+                        <% }); %>
+                      </tbody>
+                    </table>
+                  </div>
+                  <!-- /User Table -->
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Pagination -->
+          <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-end mr-3">
+              <!-- Previous Page Link -->
+              <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
+                <a class="page-link" href="?page=<%= currentPage - 1 %>&limit=<%= limit %>" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+
+              <!-- Display Page Numbers -->
+              <% for (let i = 1; i <= totalPages; i++) { %>
+                <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                  <a class="page-link" href="?page=<%= i %>&limit=<%= limit %>"><%= i %></a>
+                </li>
+              <% } %>
+
+              <!-- Next Page Link -->
+              <li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
+                <a class="page-link" href="?page=<%= currentPage + 1 %>&limit=<%= limit %>" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+          <!-- /Pagination -->
+
+          <!-- Footer -->
+          <%- include('../../partials/footer') %>
+          <!-- / Footer -->
+
+          <div class="content-backdrop fade"></div>
+        </div>
+        <!-- Content wrapper -->
+      </div>
+      <!-- / Layout page -->
+    </div>
+    <!-- Overlay -->
+    <div class="layout-overlay layout-menu-toggle"></div>
+  </div>
+  <!-- / Layout wrapper -->
+
+  <!-- Core JS -->
+  <script src="../assets/vendor/libs/jquery/jquery.js"></script>
+  <script src="../assets/vendor/libs/popper/popper.js"></script>
+  <script src="../assets/vendor/js/bootstrap.js"></script>
+  <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+  <script src="../assets/vendor/js/menu.js"></script>
+
+  <!-- Main JS -->
+  <script src="../assets/js/main.js"></script>
+
+  <!-- Page JS -->
+  <script src="../assets/js/dashboards-analytics.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      // Search functionality
+      $("#searchInput").on("keyup", function () {
+        const value = $(this).val().toLowerCase();
+        $(".dataTable tbody tr").each(function () {
+          const row = $(this);
+          const text = row.text().toLowerCase();
+          row.toggle(text.indexOf(value) > -1);
+        });
+      });
+
+      // Limit dropdown functionality
+      $("#limitSelect").on("change", function () {
+        const limit = $(this).val();
+        const url = new URL(window.location.href);
+        url.searchParams.set("limit", limit);
+        url.searchParams.set("page", 1); // Reset to the first page when changing the limit
+        window.location.href = url.toString();
+      });
+    });
+  </script>
+</body>
+</html>

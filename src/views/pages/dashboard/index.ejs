@@ -1,0 +1,319 @@
+<!doctype html>
+<html
+  lang="en"
+  class="light-style layout-menu-fixed layout-compact"
+  dir="ltr"
+  data-theme="theme-default"
+  data-assets-path="../assets/"
+  data-template="vertical-menu-template-free"
+  data-style="light"
+>
+  <body>
+    <!-- Layout wrapper -->
+    <div class="layout-wrapper layout-content-navbar">
+      <div class="layout-container">
+        <!-- Menu -->
+        <%- include('../../partials/sideBar') %>
+        <!-- / Menu -->
+
+        <!-- Layout container -->
+        <div class="layout-page">
+          <!-- Navbar -->
+          <%- include('../../partials/header') %>
+          <!-- / Navbar -->
+
+          <!-- Content wrapper -->
+          <div class="content-wrapper">
+            <!-- Content -->
+            <div class="content container-xxl mt-10">
+              <div class="row">
+                <!-- Box 1: Total Number of Users -->
+                <div class="col-md-6 col-lg-4">
+                  <div
+                    class="card text-center"
+                    style="
+                      border: 1px solid #ddd;
+                      border-radius: 8px;
+                      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                      background-color: #ffffff;
+                    "
+                  >
+                    <div class="card-body">
+                      <h5
+                        class="card-title"
+                        style="font-size: 1.25rem; color: #333"
+                      >
+                        Total Users
+                      </h5>
+                      <h3
+                        class="card-text"
+                        id="totalUsers"
+                        style="font-size: 2rem; color: #007bff"
+                      >
+                        <%= totalUsers %>
+                      </h3>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Box 2: Today's New Users -->
+                <div class="col-md-6 col-lg-4">
+                  <div
+                    class="card text-center"
+                    style="
+                      border: 1px solid #ddd;
+                      border-radius: 8px;
+                      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                      background-color: #ffffff;
+                    "
+                  >
+                    <div class="card-body">
+                      <h5
+                        class="card-title"
+                        style="font-size: 1.25rem; color: #333"
+                      >
+                        Today's New Users
+                      </h5>
+                      <h3
+                        class="card-text"
+                        id="newUsersToday"
+                        style="font-size: 2rem; color: #28a745"
+                      >
+                        <%= newUsersToday %>
+                      </h3>
+                    </div>
+                  </div>
+                </div>
+                <!-- Box 3: Today's New Transfer Request -->
+                <div class="col-md-6 col-lg-4">
+                  <div
+                    class="card text-center"
+                    style="
+                      border: 1px solid #ddd;
+                      border-radius: 8px;
+                      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                      background-color: #ffffff;
+                    "
+                  >
+                    <div class="card-body">
+                      <h5
+                        class="card-title"
+                        style="font-size: 1.25rem; color: #333"
+                      >
+                        Today's New Pending Transfer Request
+                      </h5>
+                      <h3
+                        class="card-text"
+                        id="newUsersToday"
+                        style="font-size: 2rem; color: #e0cd21"
+                      >
+                        <%= newPendingTransactionsToday %>
+                      </h3>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Chart Container -->
+              <div class="row mt-5">
+                <div class="col-md-6 col-lg-8">
+                  <div
+                    id="userTypeChart"
+                    style="
+                      height: 350px;
+                      background-color: #fff;
+                      padding: 10px;
+                      border-radius: 8px;
+                    "
+                  ></div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                  <div
+                    id="transferStatusChart"
+                    style="
+                      height: 350px;
+                      background-color: #fff;
+                      padding: 10px;
+                      border-radius: 8px;
+                    "
+                  ></div>
+                </div>
+              </div>
+            </div>
+            <!-- / Content -->
+
+            <!-- Footer -->
+            <%- include('../../partials/footer') %>
+            <!-- / Footer -->
+
+            <div class="content-backdrop fade"></div>
+          </div>
+          <!-- Content wrapper -->
+        </div>
+        <!-- / Layout page -->
+      </div>
+
+      <!-- Overlay -->
+      <div class="layout-overlay layout-menu-toggle"></div>
+    </div>
+    <!-- / Layout wrapper -->
+
+    <!-- Core JS -->
+    <!-- build:js assets/vendor/js/core.js -->
+    <script src="../assets/vendor/libs/jquery/jquery.js"></script>
+    <script src="../assets/vendor/libs/popper/popper.js"></script>
+    <script src="../assets/vendor/js/bootstrap.js"></script>
+    <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+    <script src="../assets/vendor/js/menu.js"></script>
+
+    <!-- Vendors JS -->
+    <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>
+
+    <!-- Main JS -->
+    <script src="../assets/js/main.js"></script>
+
+    <!-- Page JS -->
+    <script src="../assets/js/dashboards-analytics.js"></script>
+
+    <!-- Place this tag before closing body tag for github widget button. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    <!-- ApexCharts Initialization -->
+    <script>
+      $(document).ready(function () {
+        // Function to fetch user data and render the chart
+        function fetchUserData() {
+          $.ajax({
+            url: "/getUsersByMonth",
+            method: "GET",
+            success: function (response) {
+              if (response.success) {
+                // Prepare data for the chart, filtering out userType "1" (admin)
+                const filteredData = response.data.filter(
+                  (item) => item.userType !== "1"
+                );
+                const categories = [
+                  ...new Set(filteredData.map((item) => item.month)),
+                ];
+                const seriesData = {
+                  0: [],
+                };
+
+                categories.forEach((month) => {
+                  const monthData = filteredData.filter(
+                    (item) => item.month === month
+                  );
+                  seriesData["0"].push(
+                    monthData.find((item) => item.userType === "0")?.count || 0
+                  );
+                });
+
+                // Render the bar chart
+                renderChart(categories, seriesData);
+              }
+            },
+            error: function (err) {
+              console.error("Error fetching user data:", err);
+            },
+          });
+        }
+        function fetchTransferRequestsStatus() {
+          $.ajax({
+            url: "/getTransferRequestsStatus", // API endpoint for transfer requests
+            method: "GET",
+            success: function (response) {
+              if (response.success) {
+                const pending = response.data.pendingRequests;
+                const completed = response.data.completedRequests;
+
+                // Render the donut chart
+                renderTransferStatusChart(pending, completed);
+              }
+            },
+            error: function (err) {
+              console.error("Error fetching transfer requests status:", err);
+            },
+          });
+        }
+
+        // Function to render the chart
+        function renderChart(categories, seriesData) {
+          const maxValue = Math.max(...seriesData["0"]);
+          const yAxisMax = maxValue * 2;
+          var options = {
+            chart: {
+              type: "bar",
+              height: "100%",
+            },
+            plotOptions: {
+              bar: {
+                horizontal: false,
+                columnWidth: "55%",
+                endingShape: "rounded",
+              },
+            },
+            dataLabels: {
+              enabled: false,
+            },
+            series: [
+              {
+                name: "Users",
+                data: seriesData["0"],
+              },
+            ],
+            xaxis: {
+              categories: categories,
+            },
+            yaxis: {
+              max: yAxisMax, // Set max value of Y-axis
+            },
+            fill: {
+              opacity: 1,
+            },
+            tooltip: {
+              shared: true,
+              intersect: false,
+            },
+          };
+
+          var chart = new ApexCharts(
+            document.querySelector("#userTypeChart"),
+            options
+          );
+          chart.render();
+        }
+        function renderTransferStatusChart(pending, completed) {
+          const options = {
+            chart: {
+              type: "donut",
+              height: "100%",
+            },
+            series: [pending, completed],
+            labels: ["Pending Transfers", "Completed Transfers"],
+            colors: ["#FF4560", "#00E396"], // You can choose different colors
+            tooltip: {
+              shared: true,
+              intersect: false,
+            },
+            legend: {
+              position: "top", // Position legend at the top
+              horizontalAlign: "right", // Align legend to the right
+            },
+          };
+
+          var chart = new ApexCharts(
+            document.querySelector("#transferStatusChart"),
+            options
+          );
+          chart.render();
+        }
+
+        
+
+        // Fetch user data when the document is ready
+        fetchUserData();
+        fetchTransferRequestsStatus();
+      });
+    </script>
+  </body>
+</html>
